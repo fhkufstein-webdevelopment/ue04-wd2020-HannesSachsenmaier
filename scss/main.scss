@@ -1,0 +1,134 @@
+@import "compass/reset";
+@import "compass/css3";
+
+$black: #000;
+$red: #d9534f;
+$green: #5cb85c;
+$orange: #f0ad4e;
+$margin: 10px 5px 10px 5px;
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    font-family:'Open Sans', sans-serif;
+}
+
+/* dies ist ein kommentar */
+#main {
+    width: 990px;
+    margin:0 auto;
+}
+
+
+input[type="text"],input[type="password"] {
+    border:1px solid $black;
+    padding:5px;
+    margin:$margin;
+
+    width: 180px;
+}
+
+input[type="submit"] {
+    border:1px solid $black;
+    border-radius:0;
+    background-color:#fafafa;
+    margin:$margin;
+    cursor:pointer;
+}
+
+label {
+    margin-left:5px;
+}
+
+.passwordField {
+    width:300px;
+    float:left;
+}
+
+.passwordFeedback {
+    width:250px;
+    float:left;
+}
+
+.feedback {
+    margin:$margin;
+    font-size:11px;
+    font-weight:600;
+
+    &.error {
+        color:$red;
+    }
+
+    &.warning {
+        color:$orange;
+    }
+
+    &.success {
+        color:$green;
+    }
+}
+
+.strengthIndicator {
+    margin:$margin;
+    width: 200px;
+    padding:5px;
+    height: 13px;
+    border:1px solid #d3d3d3;
+
+    &::before {
+        content: "";
+        display: block;
+        height: 100%;
+
+        @include transition-property(width);
+        @include transition-delay(0);
+        @include transition-duration(250ms);
+        @include transition-timing-function(linear);
+    }
+}
+
+#passwordWrapper::after {
+    content: "";
+    display: block;
+    clear: both;
+    float: none;
+}
+
+.error .strengthIndicator {
+    &::before {
+        width: 10%;
+        background-color: $red;
+    }
+}
+
+.warning .strengthIndicator {
+    &::before {
+        width: 60%;
+        background-color: $orange;
+    }
+}
+
+.success .strengthIndicator {
+    &::before {
+        width: 100%;
+        background-color: $green;
+    }
+}
+
+.feedback.error, .feedback.warning, .feedback.success {
+    display: none;
+}
+
+.error .feedback.error {
+    display: block;
+}
+
+.warning .feedback.warning {
+    display: block;
+}
+
+.success .feedback.success {
+    display: block;
+}
+
