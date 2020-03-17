@@ -1,4 +1,4 @@
-function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId) {
+function PasswordChecker(wrapperId, passwordField, passwordSubmitButtonId) {
 
     //following are attributes which could be seen as "constants"
     this.successClass = "success";
@@ -9,7 +9,7 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
 
     //this attributes are set with our constructor
     this.wrapperField = document.getElementById(wrapperId);
-    this.passwordField = document.getElementById(passwordInputFieldId);
+    this.passwordField = document.getElementById(passwordField);
     this.passwordSubmitButton = document.getElementById(passwordSubmitButtonId);
 
 
@@ -18,23 +18,27 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
     //TODO start
     //now for the events which should fire:
     //if we leave the password field (focus is lost) - JavaScript Method "onblur" for an input field in our case the field this.passwordField
-    //if we enter the password field (focus is set) - JavaScript Method "onfocus" for an input field - again in our case the field this.passwordField
-    //if we are in the password field an enter text - JavaScript Method "onkeyup" or "onkeup" - again in our case the field this.passwordField
-    //if we try to click the submit button - JavaScript Method "onclick" - in our case this.passwordSubmitButton
-
     this.passwordField.onblur = function() {
-        //the keyword "this" is always referring to its context.
-        //onblur is an event which happens in "passwordField" -> so the keyword "this" would refer to the passwordField NOT to our class
-        //therefore we previously saved "this" in a variable called "that"
+        /*the keyword "this" is always referring to its context.
+        onblur is an event which happens in "passwordField" -> so the keyword "this" would refer to the passwordField NOT to our class
+        therefore we previously saved "this" in a variable called "that"*/
         that.check();
     };
 
-    //TODO implement the other events in the exact same way!
+    //if we enter the password field (focus is set) - JavaScript Method "onfocus" for an input field - again in our case the field this.passwordField
+    this.passwordField.onfocus = function(){
+        that.check();
+    };
 
+    //if we are in the password field an enter text - JavaScript Method "onkeyup" or "onkeup" - again in our case the field this.passwordField
+    this.passwordField.onkeyup = function(){
+        that.check();
+    };
 
-
-
-    //TODO end
+    //if we try to click the submit button - JavaScript Method "onclick" - in our case this.passwordSubmitButton
+    this.passwordSubmitButton.onclick = function(){
+        that.check();
+    }
 
     this.check = function() {
         //we can only check if every field which with given Id exists
@@ -59,9 +63,16 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
 
         } else {
             //obviously a field is null (we weren't able to find it)
-            console.error("A Id given to PasswordChecker doesn't exist!");
-
-            //one could improve this by telling the Developer which Id(s) are null...
+            if (this.wrapperField == null){
+                console.error("The Id wrapperField doesn't exist!");
+            }else if (this.passwordField == null){
+                console.error("The Id passwordField doesn't exist!");
+            }else if (this.passwordSubmitButton == null){
+                console.error("The Id passwordSubmitButton doesn't exist!");
+            }else{
+                console.error("Any Id is missing!!!");
+            }
+            // The console log shows now which ID is missing.
         }
     };
 
@@ -69,19 +80,35 @@ function PasswordChecker(wrapperId, passwordInputFieldId, passwordSubmitButtonId
     This method should return true if the length of passwordField value is greater or equal to this.minLength
      */
     this.checkForLength = function() {
-        //@todo
-        //have a look at javascript string methods and properties
-        return true; //this needs to be replaced!
+        var password = this.passwordField.value;
+        console.log(password)
+        if (password.length >= this.minLength){
+            return true;
+        }else {
+            return false;
+        }
     };
 
-    /*
-    This method returns true if no special Character "!§$_.:,;" is found in this.password - otherwise false
-     */
+
     this.checkForSpecialCharacters = function() {
-        //@todo
-        //have a look at javascript string methods and properties
-        //you could probably "match" it somehow
-        return true; //this needs to be replaced!
+        var password = this.passwordField.value;
+        var specCar ="!\"\\§$%&/()=´`+*~#'-_.:;,<>|@€{[]}";
+        // first loop gets the character of the password on the actual index
+        for (var i = 0; i < password.length; i++){
+            var passwordIndex = password.substr(i,1);
+            // second loop compares the character of the password with all characters of the specCar String
+            for (var j = 0; j < specCar.length; j++){
+                var specCarIndex = specCar.substr(j,1);
+                if (specCarIndex === passwordIndex){
+                    var returnValue = true;
+                    console.log(returnValue);
+                    return true;
+                }
+            }
+        }
+        returnValue = false;
+        console.log(returnValue);
+        return false;
     };
 }
 
